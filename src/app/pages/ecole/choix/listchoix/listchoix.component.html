@@ -1,0 +1,204 @@
+<app-layout>
+  <div class="example-container">
+    <mat-card>
+      <div class="form-group">
+        <!-- -------------- -->
+        <button class="m-4" *ngIf="hidefairechoix != 1" mat-flat-button color="primary" (click)="select(3)">
+          Faire mon choix
+        </button>
+        <!-- -------------- -->
+        <button class="m-4" mat-flat-button color="primary" (click)="select(2)">
+          Mes choix en cours (Vous avez jusqu'à 3 choix)
+        </button>
+        <!-- -------------- -->
+        <button class="m-4" mat-flat-button color="primary" (click)="select(1)">
+          Mes choix validés
+        </button>
+        <!-- -------------- -->
+        <button class="m-4" mat-flat-button color="primary" (click)="select(4)">
+          Mes choix confirmés
+        </button>
+        <!-- -------------- -->
+      </div>
+      <div class="m-4" *ngIf="action == 1">
+        <h1 style="text-align: center">Choix validés</h1>
+        <mat-table [dataSource]="tablemeschoixvalide">
+          <ng-container matColumnDef="cible">
+            <mat-header-cell *matHeaderCellDef> Choix </mat-header-cell>
+            <mat-cell *matCellDef="let elementc"> {{elementc.cible}} </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="cible2">
+            <mat-header-cell *matHeaderCellDef> Choix </mat-header-cell>
+            <mat-cell *matCellDef="let elementc"> {{elementc.cible2}} </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="cible3">
+            <mat-header-cell *matHeaderCellDef> Choix </mat-header-cell>
+            <mat-cell *matCellDef="let elementc"> {{elementc.cible3}} </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="actions">
+            <mat-header-cell *matHeaderCellDef> Actions </mat-header-cell>
+            <mat-cell *matCellDef="let element">
+              <button color="warn" mat-icon-button (click)='Rejeter_choix(element)'>
+                <mat-icon color="warn">cancel</mat-icon>
+              </button>
+              <button mat-icon-button (click)='Valider_choixstatut4(element)'>
+                <mat-icon color="primary">check_circle</mat-icon>
+              </button>
+            </mat-cell>
+          </ng-container>
+          <mat-header-row *matHeaderRowDef="displayedColumns_meschoixvalide"></mat-header-row>
+          <mat-row *matRowDef="let row; columns: displayedColumns_meschoixvalide;"></mat-row>
+        </mat-table>
+      </div>
+
+      <!-- ----------------------- -->
+      <div class="m-4" *ngIf="action == 2">
+        <h1 style="text-align: center">Mes choix en cours</h1>
+        <mat-table [dataSource]="tablemeschoix">
+          <ng-container matColumnDef="cible">
+            <mat-header-cell *matHeaderCellDef> Choix </mat-header-cell>
+            <mat-cell *matCellDef="let elementc"> {{elementc.cible}} </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="cible2">
+            <mat-header-cell *matHeaderCellDef> Choix </mat-header-cell>
+            <mat-cell *matCellDef="let elementc"> {{elementc.cible2}} </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="cible3">
+            <mat-header-cell *matHeaderCellDef> Choix </mat-header-cell>
+            <mat-cell *matCellDef="let elementc"> {{elementc.cible3}} </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="actions">
+            <mat-header-cell *matHeaderCellDef> Actions </mat-header-cell>
+            <mat-cell *matCellDef="let element">
+              <button color="warn" mat-icon-button (click)='Rejeter_choix(element)'>
+                <mat-icon color="warn">cancel</mat-icon>
+                Rejeter
+              </button>
+            </mat-cell>
+          </ng-container>
+          <mat-header-row *matHeaderRowDef="displayedColumns_meschoix"></mat-header-row>
+          <mat-row *matRowDef="let row; columns: displayedColumns_meschoix;"></mat-row>
+        </mat-table>
+      </div>
+
+      <div class="m-4" *ngIf="action == 3">
+        <!-- ----------------------- -->
+        <h1 style="text-align: center">Choisisser votre choix</h1>
+        <form [formGroup]="frmchoix" (ngSubmit)="onsubmit()">
+          <div class="mt-4">
+            <div class="col-md-6">
+              <mat-form-field>
+                <mat-select formControlName="cible" (selectionChange)="onchange()">
+                  <mat-option value="" disabled>Sélectionnez votre choix</mat-option>
+                  <mat-option *ngFor="let c of choix" [value]="c.cible">
+                    {{c.cible}}
+                  </mat-option>
+                </mat-select>
+                <mat-label>Choix</mat-label>
+              </mat-form-field>
+            </div>
+            <div class="col-md-6">
+              <mat-form-field>
+                <mat-select formControlName="cible1" (selectionChange)="onchange2()">
+                  <mat-option value="" disabled>Sélectionnez votre choix</mat-option>
+                  <mat-option *ngFor="let cc of choix_cible" [value]="cc.cible1">
+                    {{cc.cible1}}
+                  </mat-option>
+                </mat-select>
+                <mat-label>Choix</mat-label>
+              </mat-form-field>
+            </div>
+          </div>
+          <mat-radio-group *ngIf="cible1 != null" formControlName="cible2" aria-label="Selectionner une cible"
+            (change)="onchange3()">
+            <mat-radio-button color="primary" class="col-12 m-2" *ngFor="let cc2 of choix_cible2" name={{cc2.cible2}}
+              value={{cc2.cible2}}> {{cc2.cible2}}
+            </mat-radio-button>
+          </mat-radio-group>
+          <div>
+          </div>
+        </form>
+
+        <!-- ----------------------- -->
+        <h1 style="text-align: center">Faire mon choix</h1>
+        <div fxLayout="column" fxLayoutAlign="center Center" fxLayoutGap="20px" class="form-wrapper-add-contacts"
+          [formGroup]="frmchoixniveau">
+          <mat-table [dataSource]="tablechoix">
+            <ng-container matColumnDef="cible3">
+              <mat-header-cell *matHeaderCellDef> Choix </mat-header-cell>
+              <mat-cell *matCellDef="let element"> {{element.cible3}} </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="niveau">
+              <mat-header-cell *matHeaderCellDef> Niveau </mat-header-cell>
+              <mat-cell *matCellDef="let element">
+                <mat-select placeholder="Niveau">
+                  <mat-option value="" disabled>Sélectionnez votre niveau</mat-option>
+                  <mat-option value="1">1ère année</mat-option>
+                  <mat-option value="2">2ème année</mat-option>
+                  <mat-option value="3">3ème année</mat-option>
+                  <mat-option value="4">4ème année</mat-option>
+                  <mat-option value="5">5ème année</mat-option>
+                </mat-select>
+              </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="actions">
+              <mat-header-cell *matHeaderCellDef> Actions </mat-header-cell>
+              <mat-cell *matCellDef="let element">
+                <button mat-icon-button (click)='Valider_choix(element)'>
+                  <mat-icon color="primary">check_circle</mat-icon>
+                  Valider
+                </button>
+              </mat-cell>
+            </ng-container>
+            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+          </mat-table>
+        </div>
+      </div>
+      <!-- ----------------- -->
+      <div class="m-4" *ngIf="action == 4 ">
+        <h1 style="text-align: center">Choix confirmés</h1>
+        <mat-table [dataSource]="tablemeschoixconfirme">
+          <ng-container matColumnDef="cible">
+            <mat-header-cell *matHeaderCellDef> Choix </mat-header-cell>
+            <mat-cell *matCellDef="let elementc"> {{elementc.cible}} </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="cible2">
+            <mat-header-cell *matHeaderCellDef> Choix </mat-header-cell>
+            <mat-cell *matCellDef="let elementc"> {{elementc.cible2}} </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="cible3">
+            <mat-header-cell *matHeaderCellDef> Choix </mat-header-cell>
+            <mat-cell *matCellDef="let elementc"> {{elementc.cible3}} </mat-cell>
+          </ng-container>
+          <mat-header-row *matHeaderRowDef="displayedColumns_choixconfirme"></mat-header-row>
+          <mat-row *matRowDef="let row; columns: displayedColumns_choixconfirme;"></mat-row>
+        </mat-table>
+        <!-- ------------------- -->
+        <h1 style="text-align: center;margin-top: 50px;">Choix acceptés</h1>
+        <mat-table [dataSource]="tablemeschoixaccepte">
+          <ng-container matColumnDef="cible">
+            <mat-header-cell *matHeaderCellDef> Choix </mat-header-cell>
+            <mat-cell *matCellDef="let elementc"> {{elementc.cible}} </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="cible2">
+            <mat-header-cell *matHeaderCellDef> Choix </mat-header-cell>
+            <mat-cell *matCellDef="let elementc"> {{elementc.cible2}} </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="cible3">
+            <mat-header-cell *matHeaderCellDef> Choix </mat-header-cell>
+            <mat-cell *matCellDef="let elementc"> {{elementc.cible3}} </mat-cell>
+          </ng-container>
+          <mat-header-row *matHeaderRowDef="displayedColumns_choixaccepte"></mat-header-row>
+          <mat-row *matRowDef="let row; columns: displayedColumns_choixaccepte;"></mat-row>
+        </mat-table>
+      </div>
+      <!-- ----------------- -->
+
+
+      <!-- ----------------------- -->
+    </mat-card>
+  </div>
+
+  <app-footer></app-footer>
+</app-layout>

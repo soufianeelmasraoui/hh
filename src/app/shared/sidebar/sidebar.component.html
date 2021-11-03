@@ -1,0 +1,25 @@
+<mat-list>
+  <mat-list-item (click)="OpenParametrage()">
+    <mat-icon>filter_none</mat-icon>Ecole
+  </mat-list-item>
+  <div>
+    <mat-list-item class="ui-element" routerLink="{{routes.INSCRIPTION}}" routerLinkActive="active">
+      <mat-icon>filter_none</mat-icon>Ma fiche
+    </mat-list-item>
+    <mat-list-item class="ui-element" routerLink="{{routes.DIPLOMES}}" routerLinkActive="active">
+      <mat-icon>school</mat-icon>Mes diplômes
+    </mat-list-item>
+    <mat-list-item class="ui-element" routerLink="{{routes.CHOIX}}" routerLinkActive="active">
+      <mat-icon>grade</mat-icon>Mes choix
+    </mat-list-item>
+    <mat-list-item class="ui-element" routerLink="{{routes.LISTEQUESTION}}" routerLinkActive="active">
+      <mat-icon>question_answer</mat-icon>Mes échanges
+    </mat-list-item>
+    <mat-list-item class="ui-element" routerLink="{{routes.LISTEECHEANCE}}" routerLinkActive="active">
+      <mat-icon>timelapse</mat-icon>Mes écheances
+    </mat-list-item>
+    <mat-list-item class="ui-element" routerLink="{{routes.LISTEETUDIANTS}}" routerLinkActive="active">
+      <mat-icon>group</mat-icon>Liste des étudiants
+    </mat-list-item>
+  </div>
+</mat-list>

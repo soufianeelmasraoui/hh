@@ -1,0 +1,29 @@
+<mat-card>
+  <mat-card-content>
+    <mat-card-title class="employee-table-wrapper__header">
+      <p class="employee-table-wrapper__title">Ajouter une échéance</p>
+    </mat-card-title>
+    <form [formGroup]="AddEcheanceForm" (submit)="ajouterEcheance()">
+      <div class="row">
+        <mat-form-field appearance="outline">
+          <mat-label>Montant</mat-label>
+          <input matInput formControlName="montantechance" required />
+          <mat-error *ngIf="AddEcheanceForm.get('montantechance').errors?.required">Veuillez remplire le Montant
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <input matInput [matDatepicker]="picker" placeholder="Date d'echeance" formControlName="dateecheance" />
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <input matInput [matDatepicker]="picker2" placeholder="Date de règlement"
+            formControlName="datereglementechenace" />
+          <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+          <mat-datepicker #picker2></mat-datepicker>
+        </mat-form-field>
+      </div>
+      <button [disabled]="!AddEcheanceForm.valid" type="submit" mat-flat-button color="primary">Ajouter</button>
+    </form>
+  </mat-card-content>
+</mat-card>

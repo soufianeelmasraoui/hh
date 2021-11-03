@@ -1,0 +1,170 @@
+<app-layout>
+  <mat-card>
+    <h1 style="text-align: center">Ajouter un diplôme</h1>
+    <div class="row">
+      <div class="form-group">
+        <button style='float: right;' [routerLink]="['/home/listdiplome']" mat-flat-button style="float:right;"
+          color="primary">
+          Mes Diplômes
+        </button>
+      </div>
+    </div>
+    <form [formGroup]="formAddDiplome" (ngSubmit)="AddDiplome()">
+      <div class="row">
+        <div class="col-md-6">
+          <mat-form-field>
+            <mat-select formControlName="diplome" [(value)]="selecteddiplome">
+              <mat-option value="" disabled>Sélectionnez votre niveau</mat-option>
+              <mat-option *ngFor="let opt of options" [value]="opt.label">
+                {{opt.label}}
+              </mat-option>
+            </mat-select>
+            <mat-label>Niveau</mat-label>
+            <mat-error *ngIf="formAddDiplome.get('diplome').errors?.required">Veuillez seléctionner un niveau
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+      <div *ngIf="selecteddiplome != ''">
+        <div class="col-md-6">
+          <mat-form-field>
+            <mat-label>Option du diplome</mat-label>
+            <input type="text" formControlName="option" matInput placeholder="Option du diplome" />
+            <mat-error *ngIf="formAddDiplome.get('option').errors?.required">Veuillez remplir le champs
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <mat-form-field>
+              <input matInput formControlName="datedebut" [matDatepicker]="picker"
+                placeholder="Choisir votre date de debut" />
+              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+              <mat-error *ngIf="formAddDiplome.get('datedebut').errors?.required">Veuillez seléctionner une date
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col-md-6">
+            <mat-form-field>
+              <input matInput formControlName="datefin" [matDatepicker]="picker1"
+                placeholder="Choisir votre date d'obtention" />
+              <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+              <mat-datepicker #picker1></mat-datepicker>
+              <mat-error *ngIf="formAddDiplome.get('datefin').errors?.required">Veuillez seléctionner une date
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col-md-6">
+            <mat-form-field>
+              <mat-label>Etablissement</mat-label>
+              <input formControlName="etablissement" type="text" matInput placeholder="Etablissement" />
+              <mat-error *ngIf="formAddDiplome.get('etablissement').errors?.required">Veuillez remplir le champs
+              </mat-error>
+            </mat-form-field>
+          </div>
+
+          <div class="col-md-6">
+            <mat-form-field>
+              <mat-label>Ville</mat-label>
+              <input type="text" formControlName="ville" matInput placeholder="ville" />
+              <mat-error *ngIf="formAddDiplome.get('ville').errors?.required">Veuillez remplir le champs
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col-md-6">
+            <mat-form-field>
+              <mat-label>Pays</mat-label>
+              <input type="text" matInput formControlName="pays" placeholder="pays" />
+              <mat-error *ngIf="formAddDiplome.get('pays').errors?.required">Veuillez remplir le champs
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col-md-6">
+            <mat-form-field>
+              <mat-select formControlName="mention" required>
+                <mat-option>Selectionnez votre mention</mat-option>
+                <mat-option value="Passable">Passable</mat-option>
+                <mat-option value="Assez-bien">Assez-bien</mat-option>
+                <mat-option value="Bien">Bien</mat-option>
+                <mat-option value="Très bien">Trés bien</mat-option>
+              </mat-select>
+              <mat-label> Mention</mat-label>
+              <mat-error *ngIf="formAddDiplome.get('mention').errors?.required">Veuillez seléctionner une mention
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col-md-6">
+            <mat-form-field>
+              <textarea matInput formControlName="intitule" placeholder="Description" rows="3"></textarea>
+              <mat-error *ngIf="formAddDiplome.get('intitule').errors?.required">Veuillez remplir ce champs
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <fieldset class="form-group">
+                  <label>Image du diplôme 1 </label>
+                  <mat-error> {{imageError_1}}
+                  </mat-error>
+                  <div class="custom-file fileInputProfileWrap">
+                    <input type="file" formControlName="image" (change)="fileChangeEvent_1($event)"
+                      class="fileInputProfile">
+                    <div class="img-space">
+                      <ng-container *ngIf="isImageSaved_1; else elseTemplate">
+                        <img [src]="cardImageBase64_1" />
+                      </ng-container>
+                      <ng-template #elseTemplate>
+                        <img class="img-responsive">
+                      </ng-template>
+                    </div>
+                  </div>
+                </fieldset>
+              </div>
+              <div class="mt-4">
+                <a class="btn btn-danger" (click)="removeImage_1()" *ngIf="isImageSaved_1">Remove</a>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <fieldset class="form-group">
+                  <label>Image du diplôme 2 </label>
+                  <mat-error> {{imageError_2}}
+                  </mat-error>
+                  <div class="custom-file fileInputProfileWrap">
+                    <input type="file" formControlName="image2" (change)="fileChangeEvent_2($event)"
+                      class="fileInputProfile">
+                    <div class="img-space">
+                      <ng-container *ngIf="isImageSaved_2; else elseTemplate">
+                        <img [src]="cardImageBase64_2" />
+                      </ng-container>
+                      <ng-template #elseTemplate>
+                        <img class="img-responsive">
+                      </ng-template>
+                    </div>
+                  </div>
+                </fieldset>
+              </div>
+              <div class="mt-4">
+                <a class="btn btn-danger" (click)="removeImage_2()" *ngIf="isImageSaved_2">Remove</a>
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <div class="row m-4">
+          <div class="form-group">
+            <button [disabled]="formAddDiplome.invalid" style="float: right;" type="submit" mat-flat-button
+              color="primary">
+              Enregistrer
+            </button>
+          </div>
+        </div>
+      </div>
+    </form>
+
+  </mat-card>
+
+  <app-footer></app-footer>
+</app-layout>

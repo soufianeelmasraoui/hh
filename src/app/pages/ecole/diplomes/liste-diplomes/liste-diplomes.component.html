@@ -1,0 +1,55 @@
+<app-layout>
+  <mat-card>
+    <div class="row">
+      <div class="col-md-3">
+        <img width="100%" height="250px" src="{{monimage}}" alt="Photo étudiant" srcset="">
+      </div>
+      <div class="col-md-9">
+        <div class="row m-4"><b>Nom et prénom : </b> {{monnom}} {{monprenom}}</div>
+        <div class="row m-4"><b>GSM : </b> {{mongsm}}</div>
+        <div class="row m-4"><b>Email : </b> {{monemail}}</div>
+      </div>
+    </div>
+    <mat-card-header class="m-4">
+      <mat-card-title>Mes diplômes</mat-card-title>
+    </mat-card-header>
+    <div class="row">
+      <div class="form-group">
+        <button style='float: right;' routerLink="{{routes.ADD_DIPLOME}}" mat-flat-button style="float:right;"
+          color="primary">
+          <mat-icon>library_add</mat-icon>
+          Ajouter Diplôme
+        </button>
+      </div>
+    </div>
+    <mat-table [dataSource]="tablediplome">
+      <ng-container matColumnDef="diplome">
+        <mat-header-cell *matHeaderCellDef> Niveau </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.diplome}} </mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="datedebut">
+        <mat-header-cell *matHeaderCellDef> Année D'obtention </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.datedebut | date : "dd/MM/yyyy"}} </mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="datefin">
+        <mat-header-cell *matHeaderCellDef> Année D'obtention </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.datefin | date : "dd/MM/yyyy"}} </mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="etablissement">
+        <mat-header-cell *matHeaderCellDef> Etablissement </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.etablissement}} </mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="pays">
+        <mat-header-cell *matHeaderCellDef> Pays </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.pays}} </mat-cell>
+      </ng-container>
+      <ng-container matColumnDef="mention">
+        <mat-header-cell *matHeaderCellDef> Mention </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.mention}} </mat-cell>
+      </ng-container>
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    </mat-table>
+  </mat-card>
+  <app-footer></app-footer>
+</app-layout>

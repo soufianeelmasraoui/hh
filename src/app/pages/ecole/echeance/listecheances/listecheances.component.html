@@ -1,0 +1,53 @@
+<app-layout>
+  <mat-card>
+    <h1 style="text-align: center">Liste des échéances</h1>
+
+    <div class="row">
+      <div class="col-md-7"></div>
+      <div class="col-md-4">
+        <button (click)="openaddecheancemodal()" mat-flat-button style="float:right;" color="primary">
+          <mat-icon>library_add</mat-icon>
+          Ajouter échéance
+        </button>
+      </div>
+    </div>
+
+    <mat-table [dataSource]="tableecheance">
+      <ng-container matColumnDef="montantechance">
+        <mat-header-cell *matHeaderCellDef> Montant </mat-header-cell>
+        <mat-cell *matCellDef="let element">
+          <label [ngClass]="{'text-danger fw-bolder': element.nbjourretad >0}"> {{element.montantechance}}</label>
+        </mat-cell>
+      </ng-container>
+      <!-- ::::::::::::::::::::::::::::::::: -->
+      <ng-container matColumnDef="dateecheance">
+        <mat-header-cell *matHeaderCellDef> Date échéance </mat-header-cell>
+        <mat-cell *matCellDef="let element">
+          <label [ngClass]="{'text-danger fw-bolder': element.nbjourretad >0}"> {{element.dateecheance | date : "dd/MM/yyyy"}}</label>
+        </mat-cell>
+      </ng-container>
+      <!-- ::::::::::::::::::::::::::::::::: -->
+      <ng-container matColumnDef="datereglementechenace">
+        <mat-header-cell *matHeaderCellDef> Date réglement échéance </mat-header-cell>
+        <mat-cell *matCellDef="let element">
+          <label *ngIf="(element.nbjourretad>0);" [style.background-color]="color">
+            {{element.datereglementechenace | date : "dd/MM/yyyy"}}</label>
+        </mat-cell>
+      </ng-container>
+      <!-- ::::::::::::::::::::::::::::::::: -->
+      <ng-container matColumnDef="actions">
+        <mat-header-cell *matHeaderCellDef> Actions </mat-header-cell>
+        <mat-cell *matCellDef="let element">
+          <button mat-icon-button>
+            <mat-icon color="primary">edit</mat-icon>
+          </button>
+        </mat-cell>
+      </ng-container>
+
+      <!-- ::::::::::::::::::::::::::::::::: -->
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    </mat-table>
+  </mat-card>
+  <app-footer></app-footer>
+</app-layout>

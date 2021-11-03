@@ -1,0 +1,47 @@
+<app-layout>
+  <mat-card>
+    <h1 class="mb-4" style="text-align: center">Liste des prospects</h1>
+    <mat-card-content>
+      <form [formGroup]="frmrecherche"></form>
+      <div fxLayout fxLayoutAlign="center center">
+        <mat-form-field fxFlex="40%">
+          <input matInput type="text" [(ngModel)]="recherche" (keyup)="Onchange()" placeholder="Rechercher">
+        </mat-form-field>
+      </div>
+      <mat-table [dataSource]="dataSource" matSort>
+        <!-- Position Column -->
+        <ng-container matColumnDef="nom">
+          <mat-header-cell *matHeaderCellDef mat-sort-header> nom </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.nom}} </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="prenom">
+          <mat-header-cell *matHeaderCellDef mat-sort-header> Prenom </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.prenom}} </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="gsm">
+          <mat-header-cell *matHeaderCellDef mat-sort-header> GSM </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.gsm}} </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="email">
+          <mat-header-cell *matHeaderCellDef mat-sort-header> Email </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.email}} </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="actions">
+          <mat-header-cell *matHeaderCellDef> Actions </mat-header-cell>
+          <mat-cell *matCellDef="let element">
+            <button mat-icon-button (click)="gotodetails(element.email)">
+              <mat-icon color="primary">remove_red_eye</mat-icon>
+            </button>
+          </mat-cell>
+        </ng-container>
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+      </mat-table>
+      <mat-paginator #paginator [pageSize]="10" [pageSizeOptions]="[5, 10]" [showFirstLastButtons]="true">
+      </mat-paginator>
+    </mat-card-content>
+
+  </mat-card>
+
+  <app-footer></app-footer>
+</app-layout>

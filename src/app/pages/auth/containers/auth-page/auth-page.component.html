@@ -1,0 +1,59 @@
+<div *ngIf="loaderinterceptor.isloading | async" class="loading-indicator">
+  <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+</div>
+<div class="container-fluid page">
+  <!-- <div class="d-flex page__box p-3 mt-2">Se connecter</div> -->
+  <div class="page__content p-3 position-relative">
+    <mat-card>
+      <mat-card-content>
+        <div class="header">
+          <h1>Se connecter</h1>
+        </div>
+        <form [formGroup]="loginForm" (ngSubmit)="login()">
+          <img [src]="domainechoisi.logo" class="image--cover" height="200" width="auto">
+          <div class="emailInput">
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label>Identifiant</mat-label>
+              <input matInput formControlName="email" required />
+              <mat-error *ngIf="!loginForm.controls['email'].valid">Identifiant obligatoire
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div>
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label>Password</mat-label>
+              <input formControlName="password" matInput [type]="hide ? 'text' : 'password'" required />
+              <a mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide Password'"
+                [attr.aria-pressed]="hide">
+                <mat-icon>
+                  {{hide ? 'visibility_off' : 'visibility'}}
+                </mat-icon>
+              </a>
+              <mat-error *ngIf="!loginForm.controls['password'].valid">
+                Mot de passe obligatoire
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div class="border-top my-4"></div>
+          <span>
+            <a class="text-link" style="cursor: pointer;text-decoration-line: underline;color:blue;" class="aLink">Mot
+              de passe
+              oublié ?</a>
+          </span>
+          <div class="form-group m-4">
+            <button [disabled]="loginForm.invalid" type="submit" mat-flat-button color="primary">Se connecter</button>
+          </div>
+
+
+        </form>
+        <div class="m-4">
+          <ng-template [ngIf]="condition()">
+            <span style="font-weight: bold;color:blue">Si vous êtes un nouveau candidat, </span>
+            <br>
+            <a mat-flat-button color="primary" (click)="openRegister()">Créer un compte</a>
+          </ng-template>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

@@ -1,0 +1,79 @@
+<div *ngIf="loaderinterceptor.isloading | async" class="loading-indicator">
+  <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+</div>
+<div class="container-fluid page">
+  <div class="p-4">
+    <mat-card>
+      <mat-card-content>
+        <div class="header">
+          <h1>Pré-inscription</h1>
+        </div>
+        <!-- ------------------------- -->
+        <form [formGroup]="form" (ngSubmit)="registerEmploye()">
+          <span class="mt-4">
+            <a *ngIf="emailexist == 1" class="text-link"
+              style="cursor: pointer;color:blue;text-decoration-line: underline; float: right;" class="aLink"
+              (click)="openLogin()">J'ai déja un compte?</a>
+          </span>
+          <!-- ------------------------- -->
+          <mat-form-field class="full-width" appearance="outline">
+            <mat-label>Email</mat-label>
+            <input matInput formControlName="email" required on-focusout="verifyemail()" />
+            <mat-error *ngIf="form.get('email').errors?.required">Veuillez remplir l'email
+            </mat-error>
+            <mat-error *ngIf="form.get('email').errors?.email">Veuillez bien renseigner un email valide
+            </mat-error>
+            <p class="text-danger" *ngIf="emailexist == 1">Email éxiste déja, Merci de bien renseigner un autre email
+            </p>
+          </mat-form-field>
+          <mat-form-field class="full-width" appearance="outline">
+            <mat-label>GSM</mat-label>
+            <input matInput formControlName="gsm" required />
+            <mat-error *ngIf="form.get('gsm').errors?.required">Veuillez remplir ce champs
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field class="full-width" appearance="outline">
+            <mat-label>Nom</mat-label>
+            <input matInput formControlName="nom" required />
+            <mat-error *ngIf="form.get('nom').errors?.required">Veuillez remplir ce champs
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field class="full-width" appearance="outline">
+            <mat-label>Prenom</mat-label>
+            <input matInput formControlName="prenom" required />
+            <mat-error *ngIf="form.get('prenom').errors?.required">Veuillez remplir ce champs
+            </mat-error>
+          </mat-form-field>
+          <div class="col-md-12">
+            <label> <b>Comment souhaitez-vous continuer l'échange ?</b></label>
+            <br>
+            <mat-radio-group formControlName="moyencommunication" color="primary">
+              <mat-radio-button value="email">Via email</mat-radio-button>
+              <mat-radio-button value="gsm">Via GSM</mat-radio-button>
+              <mat-radio-button value="whatsapp">Via Whatsapp</mat-radio-button>
+            </mat-radio-group>
+          </div>
+          <br>
+          <mat-form-field class="full-width" appearance="outline">
+            <mat-label>Je suis pas un robot, resaisir ce code <b style="font-size: 20px;">{{moncode}}</b></mat-label>
+            <input matInput formControlName="coder" required autocomplete="off" />
+            <mat-error *ngIf="form.get('coder').errors?.required">Veuillez remplir ce champs
+            </mat-error>
+          </mat-form-field>
+          <div [hidden]="form.get('coder').value != moncode" class="row">
+            <p class="text-primary">Un email vous sera envoyé contenant votre mot de passe <br>
+              Vous allez être dirigé vers la page d'authentification
+            </p>
+          </div>
+          <a style="float:right" class="m-2" mat-flat-button color="primary" (click)="reset()">
+            <mat-icon>restore</mat-icon>Regénérer le code
+          </a>
+          <div class="form-group">
+            <button type="submit" [disabled]="form.get('coder').value != moncode || emailexist == 1 || form.invalid"
+              mat-flat-button color="primary">Pré-inscription</button>
+          </div>
+        </form>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

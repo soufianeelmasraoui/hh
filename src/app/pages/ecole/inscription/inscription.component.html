@@ -1,0 +1,295 @@
+<app-layout>
+  <div class="">
+    <form [formGroup]="form" (ngSubmit)="inscription()" class="example-container">
+      <div>
+        <mat-card>
+          <h1 style="text-align: center">Pré-inscription</h1>
+          <div class="border-top my-4"></div>
+          <div class="row">
+            <div class="col-md-4">
+              <div class="form-group">
+                <fieldset class="form-group">
+                  <label>Ma photo <b class="text-danger">(Cliquer dans le cadre <br> pour séléctionner votre photo de
+                      profil*)</b></label>
+                  {{imageError}}
+                  <div class="custom-file fileInputProfileWrap">
+                    <input type="file" formControlName="image" (change)="fileChangeEvent($event)"
+                      class="fileInputProfile">
+                    <div class="img-space">
+                      <ng-container>
+                        <img [src]="cardImageBase64" />
+                      </ng-container>
+                      <ng-template #elseTemplate>
+                        <img class="img-responsive">
+                      </ng-template>
+
+                    </div>
+
+                  </div>
+                </fieldset>
+              </div>
+              <a class="btn btn-danger" (click)="removeImage()" *ngIf="isImageSaved">Remove</a>
+            </div>
+            <div class="col-md-8">
+              <span><b>Nom et prénom: </b> {{currentEmploye.nom}} {{currentEmploye.prenom}}</span> <br>
+              <span><b>GSM : </b> {{currentEmploye.gsm}}</span> <br>
+              <span><b>Email : </b> {{currentEmploye.email}}</span> <br>
+            </div>
+          </div>
+          <div class="border-top my-4"></div>
+          <div class="example-full-width row">
+            <div class="col-md-4">
+              <mat-form-field class="example-form">
+                <input matInput [matDatepicker]="picker" placeholder="Choisir votre date de naissance"
+                  formControlName="datenaissance" />
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+                <mat-error *ngIf="!form.controls['datenaissance'].valid">Ce champs est obligatoire
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <div class="col-md-4 mt-2">
+              <label class="m-2">Genre :</label>
+              <mat-radio-group formControlName="genre" color="primary">
+                <mat-radio-button value="masculin">Masculin</mat-radio-button>
+                <mat-radio-button value="feminin">Feminin</mat-radio-button>
+              </mat-radio-group>
+            </div>
+            <div class="col-md-4">
+              <mat-form-field class="example-form">
+                <mat-select formControlName="situation" required>
+                  <mat-option>Selectionnez votre situation</mat-option>
+                  <mat-option value="Célibataire">Célibataire</mat-option>
+                  <mat-option value="Marié">Marié</mat-option>
+                </mat-select>
+                <mat-label> Situation familliale</mat-label>
+                <mat-error *ngIf="!form.controls['situation'].valid">Ce champs est obligatoire
+                </mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="example-full-width row">
+
+            <div class="col-md-6">
+              <mat-form-field class="example-form">
+                <mat-label>Adresse</mat-label>
+                <input type="text" formControlName="adresse1" matInput placeholder="adresse" />
+                <mat-error *ngIf="!form.controls['adresse1'].valid">Ce champs est obligatoire
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <div class="col-md-6">
+              <mat-form-field class="example-form">
+                <mat-label>Adresse Suite</mat-label>
+                <input type="text" formControlName="adresse2" matInput placeholder="adresse suite" />
+                <mat-error *ngIf="!form.controls['adresse2'].valid">Ce champs est obligatoire
+                </mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="example-full-width row">
+            <div class="col-md-4">
+              <mat-form-field class="example-form">
+                <mat-label>Code postale</mat-label>
+                <input type="text" formControlName="codepostal" matInput placeholder="code postale" />
+                <mat-error *ngIf="!form.controls['codepostal'].valid">Ce champs est obligatoire
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <div class="col-md-4">
+              <mat-form-field class="example-form">
+                <mat-label>Ville</mat-label>
+                <input type="text" matInput formControlName="ville" placeholder="ville" />
+              </mat-form-field>
+            </div>
+            <div class="col-md-4">
+              <mat-form-field class="example-form">
+                <mat-label>Pays</mat-label>
+                <input type="text" formControlName="pays" matInput placeholder="pays" />
+                <mat-error *ngIf="!form.controls['pays'].valid">Ce champs est obligatoire
+                </mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="example-full-width row">
+            <div class="col-md-6">
+              <mat-form-field class="example-form">
+                <mat-select formControlName="nationalite" required>
+                  <mat-option>Selectionnez votre nationalité</mat-option>
+                  <mat-option value="Marocaine">Marocaine</mat-option>
+                </mat-select>
+                <mat-label>Nationalité</mat-label>
+                <mat-error *ngIf="!form.controls['nationalite'].valid">Ce champs est obligatoire
+                </mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="example-full-width row">
+            <div class="col-md-6">
+              <mat-form-field class="example-form">
+                <mat-label>Whatsapp ( si différent de votre numéro de GSM )</mat-label>
+                <input type="text" formControlName="gsm2" matInput placeholder="Whatsapp" />
+                <mat-error *ngIf="!form.controls['gsm2'].valid">Ce champs est obligatoire
+                </mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+          <br />
+          <div class="row">
+            <div class="form-group">
+              <button [disabled]="form.invalid" style="float: right;" type="submit" mat-flat-button color="primary">
+                Enregistrer
+              </button>
+            </div>
+          </div>
+        </mat-card>
+      </div>
+    </form>
+    <div class="border-top my-4"></div>
+    <div>
+      <mat-card>
+        <div class="button-group mb-4">
+          <button (click)="select_addtuteur()" mat-flat-button style="float:right;" color="primary">
+            <mat-icon>library_add</mat-icon>
+            Ajouter un tuteur
+          </button>
+        </div>
+        <h1 style="text-align: center">Mes tuteurs</h1>
+        <mat-table [dataSource]="tabletuteurs">
+          <ng-container matColumnDef="lien">
+            <mat-header-cell *matHeaderCellDef> Lien de parenté </mat-header-cell>
+            <mat-cell *matCellDef="let elementc"> {{elementc.lien}} </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="nom">
+            <mat-header-cell *matHeaderCellDef> Nom </mat-header-cell>
+            <mat-cell *matCellDef="let elementc"> {{elementc.nom}} </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="prenom">
+            <mat-header-cell *matHeaderCellDef> Prénom </mat-header-cell>
+            <mat-cell *matCellDef="let elementc"> {{elementc.prenom}} </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="email">
+            <mat-header-cell *matHeaderCellDef> Email </mat-header-cell>
+            <mat-cell *matCellDef="let elementc"> {{elementc.email}} </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="actions">
+            <mat-header-cell *matHeaderCellDef> Actions </mat-header-cell>
+            <mat-cell *matCellDef="let element">
+              <button color="warn" mat-icon-button>
+                <mat-icon color="warn">cancel</mat-icon>
+                Supprimer
+              </button>
+            </mat-cell>
+          </ng-container>
+          <mat-header-row *matHeaderRowDef="displayedColumns_tabletuteurs"></mat-header-row>
+          <mat-row *matRowDef="let row; columns: displayedColumns_tabletuteurs;"></mat-row>
+        </mat-table>
+      </mat-card>
+    </div>
+    <div class="border-top my-4"></div>
+    <div *ngIf="action_addtuteur==1">
+      <mat-card>
+        <form [formGroup]="formTuteur" (ngSubmit)="addTuteur()">
+          <h1 style="text-align: center">Ajouter mon tuteur</h1>
+          <div class="border-top my-4"></div>
+          <div class="row">
+            <div class="col-md-6">
+              <mat-form-field class="example-form">
+                <mat-select formControlName="Tuteur_lien" [(value)]="selectedlien" required>
+                  <mat-option>-- Selectionner votre lien de parenté --</mat-option>
+                  <mat-option value="Pére">Pére</mat-option>
+                  <mat-option value="Mère">Mère</mat-option>
+                  <mat-option value="Grand parent">Grand parent</mat-option>
+                  <mat-option value="Autre">Autre</mat-option>
+                </mat-select>
+                <mat-label> Selectionner votre lien de parenté</mat-label>
+                <mat-error *ngIf="!formTuteur.controls['Tuteur_lien'].valid">Ce champs est obligatoire
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <!-- ------------------------- -->
+            <div class="col-md-6">
+              <mat-form-field class="example-form" *ngIf="selectedlien == 'Autre'">
+                <mat-label>Autre lien de parenté</mat-label>
+                <input type="text" formControlName="Tuteur_autrelien" matInput placeholder="Autre lien de parenté" />
+                <mat-error *ngIf="!formTuteur.controls['Tuteur_autrelien'].valid">Ce champs est obligatoire
+                </mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <mat-form-field class="example-form">
+                <mat-label>Nom</mat-label>
+                <input type="text" formControlName="Tuteur_nom" matInput placeholder="Nom" />
+                <mat-error *ngIf="!formTuteur.controls['Tuteur_nom'].valid">Ce champs est obligatoire
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <div class="col-md-6">
+              <mat-form-field class="example-form">
+                <mat-label>Prénom</mat-label>
+                <input type="text" formControlName="Tuteur_prenom" matInput placeholder="Prénom" />
+                <mat-error *ngIf="!formTuteur.controls['Tuteur_prenom'].valid">Ce champs est obligatoire
+                </mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <mat-form-field class="example-form">
+                <mat-label>Email</mat-label>
+                <input type="text" formControlName="Tuteur_email" matInput placeholder="Email" />
+                <mat-error *ngIf="!formTuteur.controls['Tuteur_email'].valid">Ce champs est obligatoire
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <div class="col-md-6">
+              <mat-form-field class="example-form">
+                <mat-label>Adresse</mat-label>
+                <input type="text" formControlName="Tuteur_adresse1" matInput placeholder="Adresse" />
+                <mat-error *ngIf="!formTuteur.controls['Tuteur_adresse1'].valid">Ce champs est obligatoire
+                </mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <mat-form-field class="example-form">
+                <mat-label>Adresse suite</mat-label>
+                <input type="text" formControlName="Tuteur_adresse2" matInput placeholder="Adresse suite" />
+                <mat-error *ngIf="!formTuteur.controls['Tuteur_adresse2'].valid">Ce champs est obligatoire
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <div class="col-md-6">
+              <mat-form-field class="example-form">
+                <mat-label>Ville</mat-label>
+                <input type="text" formControlName="Tuteur_ville" matInput placeholder="Ville" />
+                <mat-error *ngIf="!formTuteur.controls['Tuteur_ville'].valid">Ce champs est obligatoire
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <div class="col-md-6">
+              <mat-form-field class="example-form">
+                <mat-label>Pays</mat-label>
+                <input type="text" formControlName="Tuteur_pays" matInput placeholder="Pays" />
+                <mat-error *ngIf="!formTuteur.controls['Tuteur_pays'].valid">Ce champs est obligatoire
+                </mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="row">
+            <div class="form-group">
+              <button [disabled]="formTuteur.invalid" style="float: right;" type="submit" mat-flat-button
+                color="primary">
+                Ajouter
+              </button>
+            </div>
+          </div>
+        </form>
+      </mat-card>
+    </div>
+  </div>
+  <app-footer></app-footer>
+</app-layout>

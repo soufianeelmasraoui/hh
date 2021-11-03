@@ -1,0 +1,293 @@
+<app-layout>
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>Détails concernant <b>{{eleve.nom}} {{eleve.prenom}}</b></mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="button-group">
+
+        <a  class="m-4" mat-flat-button color="primary" (click)="select(4)" >
+          Echanges
+        </a>
+
+      </div>
+      <div style="text-align: center;margin-bottom: 50px;">
+        <img width="200px" height="auto" src="{{eleve.image}}">
+      </div>
+      <div class="row">
+        <div class="row">
+          <div class="col-md-6 mb-4">
+            <span><b>Nom et prénom : </b> {{eleve.nom}} {{eleve.prenom}}</span>
+          </div>
+          <div class="col-md-6 mb-4">
+            <span><b>GSM : </b> {{eleve.gsm}} </span>
+          </div>
+          <div class="col-md-6 mb-4">
+            <span><b>Email : </b> {{eleve.email}} </span>
+          </div>
+          <div class="col-md-6 mb-4">
+            <span><b>Date de naissance : </b> {{ eleve.datenaissance | date : "dd/MM/yyyy"}} </span>
+          </div>
+        </div>
+        <div class="border-top my-4"></div>
+        <div class="row">
+          <div class="col-md-6 mb-4">
+            <span><b>Ville : </b> {{eleve.ville}} </span>
+          </div>
+          <div class="col-md-6 mb-4">
+            <span><b>Pays : </b> {{eleve.pays}} </span>
+          </div>
+          <div class="col-md-6 mb-4">
+            <span><b>Adresse : </b> {{eleve.adresse1}} </span>
+          </div>
+          <div class="col-md-6 mb-4">
+            <span><b>Adresse Suite : </b> {{eleve.adresse2}} </span>
+          </div>
+          <div class="col-md-6 mb-4">
+            <span><b>Nationalité : </b> {{eleve.nationalite}} </span>
+          </div>
+          <div class="col-md-6 mb-4">
+            <span><b>Code postale : </b> {{eleve.codepostal}} </span>
+          </div>
+          <div class="col-md-6 mb-4">
+            <span><b>Whatsapp : </b> {{eleve.gsm2}} </span>
+          </div>
+          <div class="border-top my-4"></div>
+        </div>
+      </div>
+      <!-- ----------------------- -->
+    </mat-card-content>
+  </mat-card>
+  <!-- ----------------------- -->
+  <div class="col-md-12">
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title>Les diplômes de <b>{{eleve.nom}} {{eleve.prenom}}</b></mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="">
+          <mat-table [dataSource]="tablediplome">
+            <!-- Position Column -->
+            <ng-container matColumnDef="diplome">
+              <mat-header-cell *matHeaderCellDef> Niveau </mat-header-cell>
+              <mat-cell *matCellDef="let element"> {{element.diplome}} </mat-cell>
+            </ng-container>
+            <!-- Name Column -->
+            <ng-container matColumnDef="datedebut">
+              <mat-header-cell *matHeaderCellDef> Année D'obtention </mat-header-cell>
+              <mat-cell *matCellDef="let element"> {{element.datedebut | date : "dd/MM/yyyy"}} </mat-cell>
+            </ng-container>
+            <!-- Name Column -->
+            <ng-container matColumnDef="datefin">
+              <mat-header-cell *matHeaderCellDef> Année D'obtention </mat-header-cell>
+              <mat-cell *matCellDef="let element"> {{element.datefin | date : "dd/MM/yyyy"}} </mat-cell>
+            </ng-container>
+
+            <!-- Weight Column -->
+            <ng-container matColumnDef="etablissement">
+              <mat-header-cell *matHeaderCellDef> Etablissement </mat-header-cell>
+              <mat-cell *matCellDef="let element"> {{element.etablissement}} </mat-cell>
+            </ng-container>
+
+            <!-- Symbol Column -->
+            <ng-container matColumnDef="pays">
+              <mat-header-cell *matHeaderCellDef> Pays </mat-header-cell>
+              <mat-cell *matCellDef="let element"> {{element.pays}} </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="mention">
+              <mat-header-cell *matHeaderCellDef> Mention </mat-header-cell>
+              <mat-cell *matCellDef="let element"> {{element.mention}} </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="image">
+              <mat-header-cell *matHeaderCellDef> Image 1 </mat-header-cell>
+              <mat-cell *matCellDef="let element"> <img class="img-diplome m-2" src="{{element.image}}">
+              </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="image2">
+              <mat-header-cell *matHeaderCellDef> Image 2 </mat-header-cell>
+              <mat-cell *matCellDef="let element"> <img class="img-diplome m-2" src="{{element.image2}}">
+              </mat-cell>
+            </ng-container>
+
+            <mat-header-row *matHeaderRowDef="displayedColumns;sticky: true"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+          </mat-table>
+        </div>
+        <!-- ----------------------- -->
+      </mat-card-content>
+    </mat-card>
+  </div>
+  <!-- ----------------------- -->
+  <!-- ----------------------- -->
+  <!-- ----------------------- -->
+  <!-- ----------------------- -->
+  <!-- ----------------------- -->
+  <div class="col-md-12">
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title>Les choix demandés de <b>{{eleve.nom}}
+            {{eleve.prenom}}</b></mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="m-4">
+          <mat-table [dataSource]="tablechoix">
+            <ng-container matColumnDef="cible">
+              <mat-header-cell *matHeaderCellDef> Choix </mat-header-cell>
+              <mat-cell *matCellDef="let elementc"> {{elementc.cible}} </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="cible2">
+              <mat-header-cell *matHeaderCellDef> Choix </mat-header-cell>
+              <mat-cell *matCellDef="let elementc"> {{elementc.cible2}} </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="cible3">
+              <mat-header-cell *matHeaderCellDef> Choix </mat-header-cell>
+              <mat-cell *matCellDef="let elementc"> {{elementc.cible3}} </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="actions">
+              <mat-header-cell *matHeaderCellDef> Actions </mat-header-cell>
+              <mat-cell *matCellDef="let element">
+                <button *ngIf="element.idstatut != 3" color="warn" mat-icon-button (click)='Rejeter_choix(element)'>
+                  <mat-icon color="warn">cancel</mat-icon>
+                </button>
+                <button *ngIf="element.idstatut != 3" color="primary" mat-icon-button (click)='Valider_choix(element)'>
+                  <mat-icon color="primary">check_circle</mat-icon>
+                </button>
+              </mat-cell>
+            </ng-container>
+            <mat-header-row *matHeaderRowDef="displayedColumns_meschoix"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns_meschoix;"></mat-row>
+          </mat-table>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+  <!-- ----------------------- -->
+  <div class="col-md-12">
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title>Les choix confirmés par <b>{{eleve.nom}}
+            {{eleve.prenom}}</b></mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="m-4">
+          <mat-table [dataSource]="tablechoixconfirme">
+            <ng-container matColumnDef="cible">
+              <mat-header-cell *matHeaderCellDef> Choix </mat-header-cell>
+              <mat-cell *matCellDef="let elementc"> {{elementc.cible}} </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="cible2">
+              <mat-header-cell *matHeaderCellDef> Choix </mat-header-cell>
+              <mat-cell *matCellDef="let elementc"> {{elementc.cible2}} </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="cible3">
+              <mat-header-cell *matHeaderCellDef> Choix </mat-header-cell>
+              <mat-cell *matCellDef="let elementc"> {{elementc.cible3}} </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="actions">
+              <mat-header-cell *matHeaderCellDef> Actions </mat-header-cell>
+              <mat-cell *matCellDef="let element">
+                <button *ngIf="element.idstatut != 5" color="warn" mat-icon-button (click)='Rejeter_choix(element)'>
+                  <mat-icon color="warn">cancel</mat-icon>
+                </button>
+                <button *ngIf="element.idstatut != 5" color="primary" mat-icon-button (click)='accepter_choix(element)'>
+                  <mat-icon color="primary">check_circle</mat-icon>
+                </button>
+              </mat-cell>
+            </ng-container>
+            <mat-header-row *matHeaderRowDef="displayedColumns_choixconfirme"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns_choixconfirme;"></mat-row>
+          </mat-table>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+  <!-- ----------------------- -->
+  <div *ngIf="action == 4">
+    <mat-card>
+      <mat-card-content>
+        <!-- ----------------------- -->
+        <div class="mt-4">
+          <h2 style="font-weight:bold;font-size:40px;" class="mt-2">Questions</h2>
+          <!-- ---------------------- -->
+          <mat-table [dataSource]="tableechanges">
+            <ng-container matColumnDef="question">
+              <mat-header-cell *matHeaderCellDef> Question </mat-header-cell>
+              <mat-cell *matCellDef="let element"> {{element.question}} </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="reponse">
+              <mat-header-cell *matHeaderCellDef> Réponse </mat-header-cell>
+              <mat-cell *matCellDef="let element">
+                <div *ngIf="element.reponse != null || element.reponse !=''">{{element.reponse}} </div>
+                <div *ngIf="element.reponse == null || element.reponse ==''">
+                  <p class="text-danger">Pas encore de réponse</p>
+                </div>
+              </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="actions">
+              <mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
+              <mat-cell *matCellDef="let element">
+                <button mat-flat-button color="primary" *ngIf="element.reponse == null || element.reponse ==''"
+                  (click)="repondre(element)">
+                  Répondre
+                </button>
+              </mat-cell>
+            </ng-container>
+            <mat-header-row *matHeaderRowDef="displayedColumns_question"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns_question;"></mat-row>
+          </mat-table>
+        </div>
+        <div class="mt-4">
+          <h2 style="font-weight:bold;font-size:40px;" class="mt-2">Réponses</h2>
+          <!-- ---------------------- -->
+          <div class="row">
+            <div class="col-md-7"></div>
+            <div class="col-md-4">
+              <button (click)="changeadd(1)" mat-flat-button style="float:right;" color="primary">
+                <mat-icon>library_add</mat-icon>
+                Ajouter question
+              </button>
+            </div>
+          </div>
+          <!-- ---------------------- -->
+          <div *ngIf="addq==1">
+            <form [formGroup]="AddQuestionForm">
+              <div fxLayout fxLayoutAlign="center center">
+                <mat-form-field fxFlex="40%">
+                  <input matInput type="text" formControlName="question" placeholder="Ajouter une question">
+                </mat-form-field>
+                <button (click)="ajouterQuestionBO()" mat-flat-button style="float:right;" color="primary">
+                  <mat-icon>library_add</mat-icon>
+                  Ajouter
+                </button>
+              </div>
+
+            </form>
+          </div>
+
+
+          <mat-table [dataSource]="tableechangesreponses">
+            <ng-container matColumnDef="question">
+              <mat-header-cell *matHeaderCellDef> Question </mat-header-cell>
+              <mat-cell *matCellDef="let element"> {{element.question}} </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="reponse">
+              <mat-header-cell *matHeaderCellDef> Réponse </mat-header-cell>
+              <mat-cell *matCellDef="let element">
+                <div *ngIf="element.reponse != null || element.reponse !=''">{{element.reponse}} </div>
+                <div *ngIf="element.reponse == null || element.reponse ==''">
+                  <p class="text-danger">Pas encore de réponse</p>
+                </div>
+              </mat-cell>
+            </ng-container>
+            <mat-header-row *matHeaderRowDef="displayedColumns_reponses"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns_reponses;"></mat-row>
+          </mat-table>
+        </div>
+        <!-- ----------------------- -->
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <app-footer></app-footer>
+</app-layout>
